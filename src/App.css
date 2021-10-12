@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+
+.text-field{
+  width: 100%;
+}
+
+.success{
+  color: forestgreen;
+  margin-left: 10px;
+}
+
+.err{
+  color: rgb(231, 10, 10);
+  margin-left: 10px;
+}
