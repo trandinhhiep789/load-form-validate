@@ -13,6 +13,7 @@ import styled from "styled-components";
 import { Formik, Form, FastField } from "formik";
 import * as Yup from "yup";
 import InputField from "./custom-fields/inputField";
+import SelectField from "./custom-fields/selectField";
 
 const Background = styled.div`
   background: #e3f2fd;
@@ -36,6 +37,14 @@ const Btn = styled.div`
 `;
 
 function App() {
+  const options = [
+    { value: 1, label: "Iphone" },
+    { value: 2, label: "SamSung" },
+    { value: 3, label: "LG" },
+    { value: 4, label: "Wave" },
+    { value: 5, label: "SH" },
+  ];
+
   // alert
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
@@ -57,6 +66,7 @@ function App() {
     name: "",
     description: "",
     number: "",
+    dataSelect: "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -69,6 +79,8 @@ function App() {
     number: Yup.number()
       .typeError("Vui lòng nhập chữ số")
       .required("Vui lòng không bỏ trống"),
+
+    dataSelect: Yup.number().required("Vui lòng chọn data"),
   });
 
   return (
@@ -112,6 +124,7 @@ function App() {
                     <Grid item xs={12} sm={9}>
                       <Checkbox defaultChecked color="success" />
                     </Grid>
+
                     {/* Mô tả */}
                     <FastField
                       name="description"
@@ -126,6 +139,15 @@ function App() {
                       component={InputField}
                       label="Thứ tự hiển thị"
                       placeholder="Thứ tự hiển thị"
+                    />
+
+                    {/* Loại data */}
+                    <FastField
+                      name="dataSelect"
+                      component={SelectField}
+                      label="Phân loại data"
+                      placeholder="Phân loại data"
+                      options={options}
                     />
 
                     {/* Kích hoạt */}
