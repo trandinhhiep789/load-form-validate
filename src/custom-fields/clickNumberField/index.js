@@ -4,7 +4,7 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import { Grid } from "@mui/material";
 
-const InputField = (props) => {
+const ClickNumberField = (props) => {
   const {
     field,
     form, // fastfeild
@@ -13,9 +13,8 @@ const InputField = (props) => {
     placeholder, // truyền vô
   } = props;
 
-  const { name, value } = field;
-  const { errors, touched, setFieldValue } = form;
-
+  const { name } = field;
+  const { errors, touched } = form;
   const showError = errors[name] && touched[name];
 
   // name={name}
@@ -30,7 +29,7 @@ const InputField = (props) => {
         {label && <label htmlFor={name}>{label}</label>}
       </Grid>
       <Grid item xs={12} sm={9}>
-        <TextField
+        {/* <TextField
           {...field}
           type={type}
           size="small"
@@ -40,10 +39,24 @@ const InputField = (props) => {
           variant="outlined"
           error={Boolean(showError ? true : false)}
           helperText={showError && errors[name]}
+        /> */}
+        <TextField
+          {...field}
+          className="text-field"
+          InputProps={{ inputProps: { min: 0, max: 10 } }}
+          id="outlined-number"
+          label={placeholder}
+          size="small"
+          type="number"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          error={Boolean(showError ? true : false)}
+          helperText={showError && errors[name]}
         />
       </Grid>
     </>
   );
 };
 
-export default InputField;
+export default ClickNumberField;
