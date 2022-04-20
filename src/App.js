@@ -23,6 +23,7 @@ const Background = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 80px 0;
 `;
 
 const DivForm = styled.div`
@@ -79,7 +80,7 @@ function App() {
       .max(15, "Maximum 15 characters")
       .required("Vui lòng không bỏ trống"),
 
-    name: Yup.string().required("Vui lòng không bỏ trống"),
+    name: Yup.string().notRequired(),
 
     description: Yup.string().when(["id", "name"], (id, name) => {
       return id && name
@@ -127,10 +128,11 @@ function App() {
           }}
         >
           {(formikProps) => {
-            // const { values, errors, touched } = formikProps;
-            // console.log(values, errors, touched);
+            const { values, errors, touched } = formikProps;
+            console.log(values, errors, touched);
             return (
               <>
+                {/* {console.log(validationSchema)} */}
                 <Form>
                   <ConnectedFocusError />
                   <Grid container spacing={2}>

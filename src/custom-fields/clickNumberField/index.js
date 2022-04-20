@@ -29,21 +29,10 @@ const ClickNumberField = (props) => {
         {label && <label htmlFor={name}>{label}</label>}
       </Grid>
       <Grid item xs={12} sm={9}>
-        {/* <TextField
-          {...field}
-          type={type}
-          size="small"
-          className="text-field"
-          autoComplete="off"
-          label={placeholder}
-          variant="outlined"
-          error={Boolean(showError ? true : false)}
-          helperText={showError && errors[name]}
-        /> */}
         <TextField
           {...field}
           className="text-field"
-          InputProps={{ inputProps: { min: 0, max: 10 } }}
+          InputProps={{ inputProps: { min: 0, max: 30 } }}
           id="outlined-number"
           label={placeholder}
           size="small"
