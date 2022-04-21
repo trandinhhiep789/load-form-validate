@@ -1,70 +1,108 @@
-# Getting Started with Create React App
+# Cách sử dụng component: SimpleForm (/src/form-valid/SimpleForm)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### SimpleForm nhận vào 3 props
 
-In the project directory, you can run:
+```
+listInputField 
+validationSchema
+handleSubmit
 
-### `yarn start`
+<SimpleForm 
+  listInputField={constants} 
+  validationSchema={validation}  
+  handleSubmit={handleSubmit}
+/>
+```
+## VD
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### constants
+```js
+const constants = [
+    { 
+        name : "id",
+        component : "InputField",
+        label : "Mã loại giao dịch với đối tác",
+        placeholder : "Mã loại giao dịch với đối tác",
+    },
+    { 
+        name : "name",
+        component : "InputField",
+        label : "Tên loại giao dịch với đối tác",
+        placeholder : "Tên loại giao dịch với đối tác",
+    },
+    { 
+        name : "description",
+        component : "InputField",
+        label : "Mô tả",
+        placeholder : "Mô tả",
+    },
+    { 
+        name : "number",
+        component : "InputField",
+        label : "Thứ tự hiển thị",
+        placeholder : "Thứ tự hiển thị",
+    },
+    { 
+        name : "selectAmuont",
+        component : "ClickNumberField",
+        label : "Lựa chọn sô lượng",
+        placeholder : "Lựa chọn sô lượng",
+    },
+    { 
+        name : "sum",
+        component : "InputField",
+        label : "sum",
+        placeholder : "sum",
+    },
+  ]
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `yarn test`
+### validation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```js
+  const validation = Yup.object().shape({
+    id: Yup.string()
+      .min(2, "Mininum 2 characters")
+      .max(15, "Maximum 15 characters")
+      .required("Vui lòng không bỏ trống"),
 
-### `yarn build`
+    name: Yup.string().notRequired(),
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    description: Yup.string().when(["id", "name"], (id, name) => {
+      return id && name
+        ? Yup.string().required("Vui lòng mô tả khi 2 fild id và name đã điền")
+        : Yup.string().notRequired();
+    }),
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    number: Yup.number()
+      .typeError("Vui lòng nhập chữ số")
+      .required("Vui lòng không bỏ trống"),
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    selectAmuont: Yup.number().required("Vui lòng chọn số lượng"),
 
-### `yarn eject`
+    sum: Yup.number().when(
+      ["number", "selectAmuont"],
+      (number, selectAmuont) => {
+        return number + selectAmuont < 10
+          ? Yup.number().required(
+              "Vui lòng nhập tổng vì number + selectAmuont bé lớn hơn 10"
+            )
+          : Yup.number().notRequired(
+              "Không cần nhập vì number + selectAmuont đã lớn hơn 10"
+            );
+      }
+    ),
+  });
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### handleSubmit
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```js
+const handleSubmit = (values) => {
+    console.log(values);
+    setResults(values)
+    setOpenSuccess(true);
+}
+```
