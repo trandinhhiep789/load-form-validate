@@ -3,10 +3,12 @@
 
 ### SimpleForm nhận vào 3 props
 
-```
-listInputField 
-validationSchema
-handleSubmit
+```js
+//listInputField 
+//validationSchema
+//handleSubmit
+
+. . .
 
 <SimpleForm 
   listInputField={constants} 
