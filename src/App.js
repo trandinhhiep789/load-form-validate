@@ -17,6 +17,8 @@ import InputField from "./custom-fields/inputField";
 import SelectField from "./custom-fields/selectField";
 import ClickNumberField from "./custom-fields/clickNumberField";
 
+import SimpleForm from "./form-valid/SimpleForm"
+
 const Background = styled.div`
   background: #e3f2fd;
   min-height: 100vh;
@@ -50,7 +52,7 @@ function App() {
 
   // alert
   const [openSuccess, setOpenSuccess] = React.useState(false);
-  const [openError, setOpenError] = React.useState(false);
+  const [results, setResults] = React.useState("");
 
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -59,22 +61,60 @@ function App() {
   const handleClose = (alert) => {
     if (alert === "ok") {
       setOpenSuccess(false);
-    } else {
-      setOpenError(false);
     }
   };
 
-  const initialValues = {
-    id: "",
-    name: "",
-    description: "",
-    number: "",
-    dataSelect: "",
-    selectAmuont: "",
-    sum: "",
-  };
+  const handleSubmit = (values) => {
+    console.log(values);
+    setResults(values)
+    setOpenSuccess(true);
+  }
 
-  const validationSchema = Yup.object().shape({
+  const constants = [
+    { 
+        name : "id",
+        component : "InputField",
+        label : "Mã loại giao dịch với đối tác",
+        placeholder : "Mã loại giao dịch với đối tác",
+    },
+    { 
+        name : "name",
+        component : "InputField",
+        label : "Tên loại giao dịch với đối tác",
+        placeholder : "Tên loại giao dịch với đối tác",
+    },
+    
+    { 
+        name : "description",
+        component : "InputField",
+        label : "Mô tả",
+        placeholder : "Mô tả",
+    },
+    
+    { 
+        name : "number",
+        component : "InputField",
+        label : "Thứ tự hiển thị",
+        placeholder : "Thứ tự hiển thị",
+    },
+    
+    { 
+        name : "selectAmuont",
+        component : "ClickNumberField",
+        label : "Lựa chọn sô lượng",
+        placeholder : "Lựa chọn sô lượng",
+    },
+    
+    { 
+        name : "sum",
+        component : "InputField",
+        label : "sum",
+        placeholder : "sum",
+    },
+    
+  ]
+
+  const validation = Yup.object().shape({
     id: Yup.string()
       .min(2, "Mininum 2 characters")
       .max(15, "Maximum 15 characters")
@@ -106,127 +146,20 @@ function App() {
             );
       }
     ),
-
-    dataSelect: Yup.number().required("Vui lòng chọn data"),
   });
 
   return (
     <Background>
       <DivForm>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={(values, { resetForm }) => {
-            if (Number(values.number) + Number(values.selectAmuont) > 10) {
-              values.sum = Number(values.number) + Number(values.selectAmuont);
-            }
+        <SimpleForm 
+          listInputField={constants} 
+          validationSchema={validation}  
+          handleSubmit={handleSubmit}
+        />
 
-            console.log(values);
-
-            setOpenSuccess(true);
-            resetForm();
-          }}
-        >
-          {(formikProps) => {
-            const { values, errors, touched } = formikProps;
-            console.log(values, errors, touched);
-            return (
-              <>
-                {/* {console.log(validationSchema)} */}
-                <Form>
-                  <ConnectedFocusError />
-                  <Grid container spacing={2}>
-                    {/* Mã loại giao dịch với đối tác */}
-                    <FastField
-                      name="id"
-                      component={InputField}
-                      label="Mã loại giao dịch với đối tác"
-                      placeholder="Mã loại giao dịch với đối tác"
-                    />
-
-                    {/* Tên loại giao dịch với đối tác */}
-                    <FastField
-                      name="name"
-                      component={InputField}
-                      label="Tên loại giao dịch với đối tác"
-                      placeholder="Tên loại giao dịch với đối tác"
-                    />
-
-                    {/* Là giao dịch gọi đến đối tác */}
-                    <Grid item xs={12} sm={3}>
-                      <label>Là giao dịch gọi đến đối tác</label>
-                    </Grid>
-                    <Grid item xs={12} sm={9}>
-                      <Checkbox defaultChecked color="success" />
-                    </Grid>
-
-                    {/* Mô tả */}
-                    <FastField
-                      name="description"
-                      component={InputField}
-                      label="Mô tả"
-                      placeholder="Mô tả"
-                    />
-
-                    {/* Thứ tự hiển thị */}
-                    <FastField
-                      name="number"
-                      component={InputField}
-                      label="Thứ tự hiển thị"
-                      placeholder="Thứ tự hiển thị"
-                    />
-
-                    {/* Số lượng */}
-                    <FastField
-                      name="selectAmuont"
-                      component={ClickNumberField}
-                      label="Lựa chọn sô lượng"
-                      placeholder="Lựa chọn sô lượng"
-                    />
-
-                    {/* Tổng */}
-                    <FastField
-                      name="sum"
-                      component={InputField}
-                      label="Tổng number + select > 10"
-                      placeholder="Tổng number + select > 10"
-                    />
-
-                    {/* Loại data */}
-                    <FastField
-                      name="dataSelect"
-                      component={SelectField}
-                      label="Phân loại data"
-                      placeholder="Phân loại data"
-                      options={options}
-                    />
-
-                    {/* Kích hoạt */}
-                    <Grid item xs={12} sm={3}>
-                      <label>Kích hoạt</label>
-                    </Grid>
-                    <Grid item xs={12} sm={9}>
-                      <Checkbox defaultChecked color="success" />
-                    </Grid>
-
-                    {/* Hệ thống */}
-                    <Grid item xs={12} sm={3}>
-                      <label>Hệ thống</label>
-                    </Grid>
-                    <Grid item xs={12} sm={9}>
-                      <Checkbox defaultChecked color="success" />
-                    </Grid>
-                  </Grid>
-                  <Btn>
-                    <Button type="submit" variant="contained">
-                      Cập nhật
-                    </Button>
-                  </Btn>
-                </Form>
-              </>
-            );
-          }}
-        </Formik>
+        {results?<div>
+          {Object.keys(results).map(function(key) { return <div><i>{key}</i>: {results[key]}</div>; })}
+        </div>:""}
 
         {/* alert results */}
         <Snackbar
@@ -240,19 +173,6 @@ function App() {
             sx={{ width: "100%" }}
           >
             Thao tác thực hiện thành công
-          </Alert>
-        </Snackbar>
-        <Snackbar
-          open={openError}
-          autoHideDuration={3000}
-          onClose={() => handleClose("err")}
-        >
-          <Alert
-            onClose={() => handleClose("err")}
-            severity="error"
-            sx={{ width: "100%" }}
-          >
-            Vui lòng điền đúng kiểu dữ liệu và đầy đủ các trường thông tin
           </Alert>
         </Snackbar>
       </DivForm>
