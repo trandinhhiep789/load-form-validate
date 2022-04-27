@@ -70,18 +70,38 @@ function App() {
     setOpenSuccess(true);
   }
 
+  const plus10 = () => {
+    return Yup.number().test('fieldB-commission-validation', 'invalid value', (value, context) => {
+      return context.parent.plus10 === 10
+    })  
+  }
+
   const constants = [
     { 
         name : "id",
         component : "InputField",
         label : "Mã loại giao dịch với đối tác",
         placeholder : "Mã loại giao dịch với đối tác",
+
+        typeInput : "string",
+        isRequired: true,
+        isRequiredOption: false,
+        typeFunctionCustomOption: "",
+        listOptions: [],
+        passCustomOption: ""
     },
     { 
         name : "name",
         component : "InputField",
         label : "Tên loại giao dịch với đối tác",
         placeholder : "Tên loại giao dịch với đối tác",
+
+        typeInput : "string",
+        isRequired: false,
+        isRequiredOption: false,
+        typeFunctionCustomOption: "",
+        listOptions: [],
+        passCustomOption: ""
     },
     
     { 
@@ -89,6 +109,13 @@ function App() {
         component : "InputField",
         label : "Mô tả",
         placeholder : "Mô tả",
+
+        typeInput : "string",
+        isRequired: true,
+        isRequiredOption: true,
+        typeFunctionCustomOption: "relate",
+        listOptions: ["id", "name"],
+        passCustomOption: ""
     },
     
     { 
@@ -96,6 +123,13 @@ function App() {
         component : "InputField",
         label : "Thứ tự hiển thị",
         placeholder : "Thứ tự hiển thị",
+
+        typeInput : "number",
+        isRequired: true,
+        isRequiredOption: false,
+        typeFunctionCustomOption: "",
+        listOptions: [],
+        passCustomOption: ""
     },
     
     { 
@@ -103,6 +137,13 @@ function App() {
         component : "ClickNumberField",
         label : "Lựa chọn sô lượng",
         placeholder : "Lựa chọn sô lượng",
+
+        typeInput : "number",
+        isRequired: true,
+        isRequiredOption: false,
+        typeFunctionCustomOption: "",
+        listOptions: [],
+        passCustomOption: ""
     },
     
     { 
@@ -110,50 +151,36 @@ function App() {
         component : "InputField",
         label : "sum",
         placeholder : "sum",
+
+        typeInput : "number",
+        isRequired: true,
+        isRequiredOption: true,
+        typeFunctionCustomOption: "sum",
+        listOptions: ["number", "selectAmuont"],
+        passCustomOption: ""
+    },
+
+    { 
+      name : "plus10",
+      component : "InputField",
+      label : "plus10",
+      placeholder : "plus10",
+
+      typeInput : "number",
+      isRequired: true,
+      isRequiredOption: true,
+      typeFunctionCustomOption: "",
+      listOptions: [],
+      passCustomOption: plus10,
     },
     
   ]
-
-  const validation = Yup.object().shape({
-    id: Yup.string()
-      .min(2, "Mininum 2 characters")
-      .max(15, "Maximum 15 characters")
-      .required("Vui lòng không bỏ trống"),
-
-    name: Yup.string().notRequired(),
-
-    description: Yup.string().when(["id", "name"], (id, name) => {
-      return id && name
-        ? Yup.string().required("Vui lòng mô tả khi 2 fild id và name đã điền")
-        : Yup.string().notRequired();
-    }),
-
-    number: Yup.number()
-      .typeError("Vui lòng nhập chữ số")
-      .required("Vui lòng không bỏ trống"),
-
-    selectAmuont: Yup.number().required("Vui lòng chọn số lượng"),
-
-    sum: Yup.number().when(
-      ["number", "selectAmuont"],
-      (number, selectAmuont) => {
-        return number + selectAmuont < 10
-          ? Yup.number().required(
-              "Vui lòng nhập tổng vì number + selectAmuont bé lớn hơn 10"
-            )
-          : Yup.number().notRequired(
-              "Không cần nhập vì number + selectAmuont đã lớn hơn 10"
-            );
-      }
-    ),
-  });
 
   return (
     <Background>
       <DivForm>
         <SimpleForm 
           listInputField={constants} 
-          validationSchema={validation}  
           handleSubmit={handleSubmit}
         />
 
