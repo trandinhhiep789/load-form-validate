@@ -142,23 +142,27 @@ const SimpleForm = memo((props) => {
             return (
               <>
                 <Form>
-                    { listInputField.map((eachField, i) => {
-                        return(
-                            <div style={{ margin: "15px 0" }} key={i}>
-                                <FastField
-                                    name={eachField.name}
-                                    component={
-                                        eachField.component == "InputField" ? InputField : ClickNumberField
-                                    }
-                                    // label={eachField.label}
-                                    placeholder={eachField.placeholder}
-                                />
-                            </div>
-                        )
-                    }) }
+                    <div style={{  display: "flex", flexWrap: "wrap" }}>
+                      { listInputField.map((eachField, i) => {
+                          return(
+                              <div style={{ boxSizing: "border-box", padding: "0 15px 15px 0", width: eachField.width }} key={i}>
+                                  <FastField
+                                      name={eachField.name}
+                                      component={
+                                          eachField.component == "InputField" ? InputField : ClickNumberField
+                                      }
+                                      // label={eachField.label}
+                                      placeholder={eachField.placeholder}
+                                  />
+                              </div>
+                          )
+                      }) }
+                    </div>
                      <Button type="submit" variant="contained">
                         Cập nhật
                      </Button>
+                     <br/>
+                     <br/>
                 </Form>
               </>
             )

@@ -18,21 +18,19 @@ import SelectField from "./custom-fields/selectField";
 import ClickNumberField from "./custom-fields/clickNumberField";
 
 import SimpleForm from "./form-valid/SimpleForm"
+import DataTable from "./table/DataTable";
 
 const Background = styled.div`
   background: #e3f2fd;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 80px 0;
+  text-align: center;
+  padding: 30px;
 `;
 
 const DivForm = styled.div`
   border: 1px solid rgba(144, 202, 249, 0.46);
   background: #fff;
   padding: 30px;
-  width: 70%;
   border-radius: 15px;
 `;
 
@@ -78,20 +76,22 @@ function App() {
 
   const constants = [
     { 
-        name : "id",
-        component : "InputField",
-        label : "Mã loại giao dịch với đối tác",
-        placeholder : "Mã loại giao dịch với đối tác",
+      width: "20%",  
+      name : "id",
+      component : "InputField",
+      label : "Mã loại giao dịch với đối tác",
+      placeholder : "Mã loại giao dịch với đối tác",
 
-        typeInput : "string",
-        isRequired: true,
-        isRequiredOption: false,
-        typeFunctionCustomOption: "",
-        listOptions: [],
-        passCustomOption: ""
+      typeInput : "string",
+      isRequired: true,
+      isRequiredOption: false,
+      typeFunctionCustomOption: "",
+      listOptions: [],
+      passCustomOption: ""
     },
     { 
-        name : "name",
+      width: "20%",  
+      name : "name",
         component : "InputField",
         label : "Tên loại giao dịch với đối tác",
         placeholder : "Tên loại giao dịch với đối tác",
@@ -105,7 +105,8 @@ function App() {
     },
     
     { 
-        name : "description",
+      width: "20%",  
+      name : "description",
         component : "InputField",
         label : "Mô tả",
         placeholder : "Mô tả",
@@ -119,7 +120,8 @@ function App() {
     },
     
     { 
-        name : "number",
+      width: "20%",  
+      name : "number",
         component : "InputField",
         label : "Thứ tự hiển thị",
         placeholder : "Thứ tự hiển thị",
@@ -133,7 +135,8 @@ function App() {
     },
     
     { 
-        name : "selectAmuont",
+      width: "20%",  
+      name : "selectAmuont",
         component : "ClickNumberField",
         label : "Lựa chọn sô lượng",
         placeholder : "Lựa chọn sô lượng",
@@ -147,7 +150,8 @@ function App() {
     },
     
     { 
-        name : "sum",
+      width: "20%",  
+      name : "sum",
         component : "InputField",
         label : "sum",
         placeholder : "sum",
@@ -161,6 +165,7 @@ function App() {
     },
 
     { 
+      width: "20%",
       name : "plus10",
       component : "InputField",
       label : "plus10",
@@ -183,6 +188,8 @@ function App() {
           listInputField={constants} 
           handleSubmit={handleSubmit}
         />
+
+        <DataTable/>
 
         {results?<div>
           {Object.keys(results).map(function(key) { return <div><i>{key}</i>: {results[key]}</div>; })}

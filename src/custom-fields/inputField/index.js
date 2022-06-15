@@ -26,10 +26,10 @@ const InputField = (props) => {
 
   return (
     <>
-      <Grid item xs={12} sm={3}>
+      {/* <Grid item xs={12} sm={3}>
         {label && <label htmlFor={name}>{label}</label>}
       </Grid>
-      <Grid item xs={12} sm={9}>
+      <Grid item xs={12} sm={9}> */}
         <TextField
           {...field}
           type={type}
@@ -40,8 +40,9 @@ const InputField = (props) => {
           variant="outlined"
           error={Boolean(showError ? true : false)}
           helperText={showError && errors[name]}
+          fullWidth
         />
-      </Grid>
+      {/* </Grid> */}
     </>
   );
 };
